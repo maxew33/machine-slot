@@ -1,0 +1,198 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --length: min(1vw, 0.6vh);
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background: #222;
+  display: grid;
+  place-content: center;
+}
+
+.container {
+  width: calc(90 * var(--length));
+  aspect-ratio: 2/3;
+}
+
+.slot-machine {
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 0, 0, 0.25);
+  display: grid;
+  grid-template-rows: 1fr 2fr 1.5fr;
+  grid-template-areas: "top" "middle" "bottom";
+}
+
+.slot-machine-top {
+  grid-area: "top";
+}
+
+.slot-machine-middle {
+  grid-area: "middle";
+}
+.slot-machine-middle .spinners-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+  overflow: hidden;
+}
+.slot-machine-middle .spinners-container .overlay {
+  position: absolute;
+  height: 100%;
+  width: 30%;
+  border: 2px solid black;
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(255, 255, 255, 0.15) 33%, rgba(255, 255, 255, 0.15) 66%, rgba(0, 0, 0, 0.75));
+}
+.slot-machine-middle .spinners-container .spinner-container {
+  width: 30%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  background: whitesmoke;
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner {
+  position: relative;
+  width: 100%;
+  height: inherit;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50% calc(-30 * var(--length));
+  pointer-events: none;
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner .symbol {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  height: 100%;
+  width: 100%;
+  font-size: calc(10 * var(--length));
+  display: grid;
+  place-content: center;
+  transform-origin: 50% 50% calc(-30 * var(--length));
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(1) {
+  transform: rotateX(30deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(2) {
+  transform: rotateX(60deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(3) {
+  transform: rotateX(90deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(4) {
+  transform: rotateX(120deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(5) {
+  transform: rotateX(150deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(6) {
+  transform: rotateX(180deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(7) {
+  transform: rotateX(210deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(8) {
+  transform: rotateX(240deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(9) {
+  transform: rotateX(270deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(10) {
+  transform: rotateX(300deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(11) {
+  transform: rotateX(330deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner > div:nth-child(12) {
+  transform: rotateX(360deg);
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner-1 {
+  transform: rotateX(var(--rot-spin));
+  transition: transform var(--rot-speed) linear;
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner-2 {
+  transform: rotateX(var(--rot-spin));
+  transition: transform var(--rot-speed) linear;
+}
+.slot-machine-middle .spinners-container .spinner-container .spinner-3 {
+  transform: rotateX(var(--rot-spin));
+  transition: transform var(--rot-speed) linear;
+}
+
+.slot-machine-bottom {
+  grid-area: "bottom";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  transform-style: preserve-3d;
+  perspective: calc(75 * var(--length));
+}
+.slot-machine-bottom .button-container {
+  position: relative;
+  width: 100%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  transform-origin: top;
+  transform: translateY(calc(2.5 * var(--length))) rotateX(30deg);
+  background: green;
+  transform-style: preserve-3d;
+}
+.slot-machine-bottom .button-container button {
+  --btn-bottom: 12.5%;
+  position: relative;
+  background-color: #222;
+  cursor: pointer;
+  width: 40%;
+  height: 75%;
+  font-size: calc(10 * var(--length));
+  border: none;
+  top: 0;
+  border-radius: calc(7.5 * var(--length));
+}
+.slot-machine-bottom .button-container button:nth-child(1)::before {
+  content: "SPIN";
+  bottom: var(--btn-bottom);
+  left: calc(-0.5 * var(--length));
+}
+.slot-machine-bottom .button-container button:nth-child(2)::before {
+  content: "STOP";
+  bottom: var(--btn-bottom);
+  left: calc(0.5 * var(--length));
+}
+.slot-machine-bottom .button-container button::before {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  left: 0;
+  background: whitesmoke;
+  display: grid;
+  place-content: center;
+}
+.slot-machine-bottom .button-container::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  background: blue;
+  transform-origin: top;
+  transform: translateY(100%) rotateX(-30deg);
+  bottom: 0;
+}
+.slot-machine-bottom .slot-machine-footer {
+  width: 100%;
+  height: 50%;
+  background-color: red;
+  transform: translate3d(0, calc(-0.5 * var(--length)), calc(12.5 * var(--length)));
+}/*# sourceMappingURL=style.css.map */
