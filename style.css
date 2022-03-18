@@ -270,7 +270,7 @@ body {
   height: 60%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   transform-origin: top;
   transform: translateY(calc(2.5 * var(--length))) rotateX(30deg);
   background: linear-gradient(transparent 90%, #120330), #1a004d;
