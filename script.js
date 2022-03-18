@@ -7,7 +7,8 @@ const spinBtn = document.querySelector('.spin-btn'),
 
 
 let stopWheel = false,
-    canSpin = true
+    canSpin = true,
+    jackpot = false
 
 const spinners = [{
     id: spin1,
@@ -28,30 +29,25 @@ const spinners = [{
     rotSpin: 0
 }]
 
-const checkSymbols = (delay) => {
-    setTimeout(() => {
-        const getSymbol = (i) => {
-            return spinSymbols[((-30 - spinners[i].rotSpin) / 30) % 12].dataset.value
+const spin = () => {
+    if (canSpin) {
+        for (let i = 0; i < spinners.length; i++) {
+            spinWheel(spinners[i])
         }
-
-        const symbol1 = getSymbol(0),
-            symbol2 = getSymbol(1),
-            symbol3 = getSymbol(2)
-        console.log(symbol1, symbol2, symbol3)
-
-        if (symbol1 === symbol2 && symbol1 === symbol3) {
-            console.log('you win')
+        btnPushed(spinBtn, true)
+        if (jackpot) {
+            document.querySelector('.machine-title').classList.remove('jackpot')
+            jackpot = false
         }
-        else {
-            console.log('you loose')
-        }
+    }
+    canSpin = false
+}
 
-        stopWheel = false
-        canSpin = true
-        spinBtn.style.setProperty('--btn-bottom', '12.5%')
-        stopBtn.style.setProperty('--btn-bottom', '12.5%')
-
-    }, 125 + delay * 2)
+const stop = () => {
+    if (!canSpin) {
+        stopWheel = true
+        btnPushed(stopBtn, true)
+    }
 }
 
 const spinWheel = (spinner) => {
@@ -69,7 +65,6 @@ const spinWheel = (spinner) => {
             spinner.rotSpin -= 30
             spinner.id.style.setProperty('--rot-spin', spinner.rotSpin + 'deg')
             spinner.id.style.setProperty('--rot-speed', (spinner.delaySpin / 1000) + 's')
-            if (spinner.id.dataset.id === "3" && spinner.delaySpin >= 900) { console.log(spinner.delaySpin) }
         }, stoDelay)
 
         spinner.delaySpin >= 1000 && (
@@ -80,20 +75,36 @@ const spinWheel = (spinner) => {
     }, 100)
 }
 
-const spin = () => {
-    if (canSpin) {
-        for (let i = 0; i < spinners.length; i++) {
-            setTimeout(() => spinWheel(spinners[i]), 300 * i)
-        }
-        spinBtn.style.setProperty('--btn-bottom', '5%')
-    }
-    canSpin = false
+const btnPushed = (btn, pushed) => {
+    btn.style.setProperty('--btn-bottom', pushed ? '5%' : '12.5%')
+    btn.style.cursor = pushed ? 'not-allowed' : "pointer"
 }
 
-const stop = () => {
-    console.log('stop')
-    stopBtn.style.setProperty('--btn-bottom', '5%')
-    stopWheel = true
+const checkSymbols = (delay) => {
+    setTimeout(() => {
+        const getSymbol = (i) => {
+            return spinSymbols[((-30 - spinners[i].rotSpin) / 30) % 12].dataset.value
+        }
+
+        const symbol1 = getSymbol(0),
+            symbol2 = getSymbol(1),
+            symbol3 = getSymbol(2)
+
+        if (symbol1 === symbol2 && symbol1 === symbol3) {
+            console.log('you win')
+            document.querySelector('.machine-title').classList.add('jackpot')
+            jackpot = true
+        }
+        else {
+            console.log('you loose')
+        }
+
+        stopWheel = false
+        canSpin = true
+        btnPushed(spinBtn, false)
+        btnPushed(stopBtn, false)
+
+    }, 125 + delay * 2)
 }
 
 spinBtn.addEventListener('click', spin)
